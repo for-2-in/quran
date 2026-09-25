@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- أيقونة التبويب في المتصفح (صيغة JPG) -->
+<link rel="icon" type="image/jpeg" href="preview.png">
+
+<!-- صورة المعاينة عند إرسال الرابط عبر الواتساب والتليجرام (صيغة JPG) -->
+<meta property="og:title" content="تلاوات قرآنية">
+<meta property="og:description" content="تلاوات خاشعة بصوتي الخاص">
+<meta property="og:image" content="favicon.jpg">
+<meta property="og:type" content="website">
+    <title> ختمة قرآنية غير معتمدة</title>
+    <!-- Google Fonts & FontAwesome Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --bg-primary: #0a1118;
+            --bg-card: #131e29;
+            --bg-card-hover: #1b2a3a;
+            --gold-primary: #d4af37;
+            --gold-light: #f3e5ab;
+            --text-main: #f0f4f8;
+            --text-muted: #8a99ad;
+            --border-color: rgba(212, 175, 55, 0.25);
+            --player-bg: #0f1923;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(212, 175, 55, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(212, 175, 55, 0.05) 0%, transparent 40%);
+            padding-bottom: 70px;
+        }
+
+        /* Header Styling */
+        header {
+            text-align: center;
+            padding: 2rem 1rem 1rem;
+            background: linear-gradient(180deg, rgba(19, 30, 41, 0.8) 0%, rgba(10, 17, 24, 0) 100%);
+        }
+
+        .header-title {
+            font-family: 'Amiri', serif;
+            font-size: 2.4rem;
+            color: var(--gold-primary);
+            margin-bottom: 0.3rem;
+            font-weight: 700;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .header-subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 300;
+        }
+
+        /* Top Player Section (Sticky) */
+        .top-player-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background-color: var(--player-bg);
+            border-bottom: 1px solid var(--border-color);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            backdrop-filter: blur(10px);
+            padding: 1rem 1.5rem;
+        }
+
+        .player-content {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .player-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .current-track-name {
+            font-family: 'Amiri', serif;
+            font-size: 1.3rem;
+            color: var(--gold-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .control-btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            position: relative;
+        }
+
+        .control-btn:hover {
+            color: var(--gold-primary);
+        }
+
+        .control-btn.play-main {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: var(--gold-primary);
+            color: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .control-btn.play-main:hover {
+            transform: scale(1.05);
+            background-color: var(--gold-light);
+        }
+
+        .seek-btn {
+            font-size: 0.95rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .seek-btn:hover {
+            color: var(--gold-primary);
+        }
+
+        .speed-btn {
+            background-color: rgba(212, 175, 55, 0.1);
+            border: 1px solid var(--border-color);
+            color: var(--gold-primary);
+            padding: 0.3rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .speed-btn:hover {
+            background-color: var(--gold-primary);
+            color: var(--bg-primary);
+        }
+
+        /* Progress Bar & Thumb Slider */
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            width: 100%;
+        }
+
+        .time-stamp {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            position: relative;
+            direction: ltr !important;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--gold-primary);
+            border-radius: 5px;
+            width: 0%;
+            position: relative;
+        }
+
+        /* النقطة التفاعلية فوق شريط التقديم */
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            right: -7px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 14px;
+            height: 14px;
+            background-color: var(--gold-light);
+            border: 2px solid var(--gold-primary);
+            border-radius: 50%;
+            box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+            transition: transform 0.1s ease;
+        }
+
+        .progress-bar:hover .progress-fill::after {
+            transform: translateY(-50%) scale(1.2);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 92%;
+            flex: 1;
+            padding: 2rem 0;
+        }
+
+        /* Search Section */
+        .controls-bar {
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: center;
+        }
+
+        .search-box {
+            position: relative;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.8rem 1rem 0.8rem 2.8rem;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-main);
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.95rem;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            border-color: var(--gold-primary);
+            box-shadow: 0 0 8px rgba(212, 175, 55, 0.2);
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        /* Track List Grid */
+        .playlist-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .track-card {
+            background-color: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-top: 3px solid var(--gold-primary);
+            border-radius: 12px;
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            text-align: center;
+            gap: 1rem;
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .track-card:hover {
+            background-color: var(--bg-card-hover);
+            transform: translateY(-4px);
+            border-color: var(--gold-primary);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .track-card.active {
+            background-color: var(--bg-card-hover);
+            border-top-color: var(--gold-light);
+            box-shadow: 0 0 15px rgba(212, 175, 55, 0.2);
+        }
+
+        .track-number {
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background-color: rgba(212, 175, 55, 0.1);
+            color: var(--gold-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+
+        .track-title {
+            font-family: 'Amiri', serif;
+            font-size: 1.4rem;
+            color: var(--text-main);
+        }
+
+        .track-card.active .track-title {
+            color: var(--gold-light);
+        }
+
+        .play-btn-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--gold-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .track-card:hover .play-btn-icon {
+            background-color: var(--gold-primary);
+            color: var(--bg-primary);
+        }
+
+        /* Fixed Footer */
+        footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            text-align: center;
+            padding: 0.8rem 1rem;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            background-color: var(--player-bg);
+            border-top: 1px solid var(--border-color);
+            z-index: 999;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 -4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        footer a {
+            color: var(--gold-primary);
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.2s;
+        }
+
+        footer a:hover {
+            color: var(--gold-light);
+            text-decoration: underline;
+        }
+
+        /* Responsive Settings */
+        @media (max-width: 600px) {
+            .playlist-grid {
+                grid-template-columns: 1fr;
+            }
+            .header-title { font-size: 1.8rem; }
+            .track-card {
+                flex-direction: row;
+                text-align: right;
+                border-top: none;
+                border-right: 3px solid var(--gold-primary);
+            }
+            .track-card:hover {
+                transform: translateX(-4px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1 class="header-title">التلاوات القرآنية</h1>
+        <p class="header-subtitle">نفع الله بكم</p>
+    </header>
+
+    <!-- المشغل الصوتي العالي المثبت -->
+    <div class="top-player-wrapper">
+        <div class="player-content">
+            <div class="player-details">
+                <div class="current-track-name" id="currentTrackName">اختر سورة للاستماع</div>
+                <div class="player-controls">
+                    <button class="speed-btn" id="speedBtn" onclick="changeSpeed()">1x</button>
+                    <button class="control-btn seek-btn" onclick="seekBySeconds(-10)" title="إرجاع 10 ثوانٍ"><i class="fa-solid fa-rotate-left"></i></button>
+                    <button class="control-btn" onclick="playPrev()"><i class="fa-solid fa-forward-step"></i></button>
+                    <button class="control-btn play-main" id="mainPlayBtn" onclick="togglePlay()"><i class="fa-solid fa-play"></i></button>
+                    <button class="control-btn" onclick="playNext()"><i class="fa-solid fa-backward-step"></i></button>
+                    <button class="control-btn seek-btn" onclick="seekBySeconds(10)" title="تقديم 10 ثوانٍ"><i class="fa-solid fa-rotate-right"></i></button>
+                </div>
+            </div>
+
+            <div class="progress-container">
+                <span class="time-stamp" id="currentTime">00:00</span>
+                <div class="progress-bar" id="progressBar" onclick="seek(event)">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <span class="time-stamp" id="totalDuration">00:00</span>
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="controls-bar">
+            <div class="search-box">
+                <input type="text" id="searchInput" placeholder="بحث عن سورة..." onkeyup="filterSurahs()">
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </div>
+        </div>
+
+        <div class="playlist-grid" id="playlist">
+            <!-- سيتم توليد المربعات تلقائياً بواسطة JavaScript -->
+        </div>
+    </main>
+
+    <audio id="audioPlayer"></audio>
+
+    <!-- الشريط السفلي المثبت -->
+    <footer>
+        إذا وجدت أي خطأ في التلاوات يرجى إبلاغنا عبر التلجرام: 
+        <a href="https://t.me/for_2_in" target="_blank">@for_2_in</a>
+    </footer>
+
+    <script>
+        const tracks = [
+            
+            {
+                name: "سورة ابراهيم",
+                file: "014.ogg" // اسم ملف الصوت المرفوع في نفس المجلد
+            },
+
+            {
+                name: "سورة الاسراء",
+                file: "017.mp3" // اسم ملف الصوت المرفوع في نفس المجلد
+            },
+
+            {
+                name: "سورة الكهف",
+                file: "018.mp3"
+            },
+
+            {
+                name: "سورة النور",
+                file: "024.ogg"
+            },
+
+            {
+                name: "سورة محمد",
+                file: "047.ogg" // اسم ملف الصوت المرفوع في نفس المجلد
+            },
+
+            {
+                name: "سورة ق",
+                file: "050.ogg" // اسم ملف الصوت المرفوع في نفس المجلد
+            },
+
+            {
+                name: "سورة الرحمن",
+                file: "055.ogg" // اسم ملف الصوت المرفوع في نفس المجلد
+            },
+
+            {
+                name: "سورة الواقعة",
+                file: "056.ogg" // اسم ملف الصوت المرفوع في نفس المجلد
+            },
+
+            {
+                name: "سورة الحديد",
+                file: "057.ogg" // اسم ملف الصوت المرفوع في نفس المجلد
+            },
+
+            {
+                name: "سورة الملك",
+                file: "067.ogg"
+            },
+                    
+
+            {
+                name: "سورة النازعات",
+                file: "079.ogg" // اسم ملف الصوت المرفوع في نفس المجلد
+            },
+
+        ];
+
+        let currentTrackIndex = -1;
+        const speeds = [1, 1.25, 1.5, 1.75, 2];
+        let currentSpeedIndex = 0;
+
+        const audio = document.getElementById('audioPlayer');
+        const mainPlayBtn = document.getElementById('mainPlayBtn');
+        const currentTrackName = document.getElementById('currentTrackName');
+        const progressFill = document.getElementById('progressFill');
+        const currentTimeEl = document.getElementById('currentTime');
+        const totalDurationEl = document.getElementById('totalDuration');
+        const speedBtn = document.getElementById('speedBtn');
+
+        function renderPlaylist() {
+            const playlistEl = document.getElementById('playlist');
+            playlistEl.innerHTML = '';
+
+            tracks.forEach((track, index) => {
+                const card = document.createElement('div');
+                card.className = `track-card ${index === currentTrackIndex ? 'active' : ''}`;
+                card.onclick = () => loadAndPlay(index);
+
+                card.innerHTML = `
+                    <div class="track-number">${index + 1}</div>
+                    <div class="track-title">${track.name}</div>
+                    <div class="play-btn-icon">
+                        <i class="fa-solid ${index === currentTrackIndex && !audio.paused ? 'fa-pause' : 'fa-play'}"></i>
+                    </div>
+                `;
+                playlistEl.appendChild(card);
+            });
+        }
+
+        function loadAndPlay(index) {
+            if (index < 0 || index >= tracks.length) return;
+            
+            if (currentTrackIndex === index) {
+                togglePlay();
+                return;
+            }
+
+            currentTrackIndex = index;
+            audio.src = tracks[currentTrackIndex].file;
+            currentTrackName.textContent = tracks[currentTrackIndex].name;
+            audio.playbackRate = speeds[currentSpeedIndex];
+            
+            audio.play();
+            updateUI();
+        }
+
+        function togglePlay() {
+            if (currentTrackIndex === -1) {
+                loadAndPlay(0);
+                return;
+            }
+
+            if (audio.paused) {
+                audio.play();
+            } else {
+                audio.pause();
+            }
+            updateUI();
+        }
+
+        function changeSpeed() {
+            currentSpeedIndex = (currentSpeedIndex + 1) % speeds.length;
+            const newSpeed = speeds[currentSpeedIndex];
+            audio.playbackRate = newSpeed;
+            speedBtn.textContent = newSpeed + 'x';
+        }
+
+        function playNext() {
+            if (tracks.length === 0) return;
+            let nextIndex = (currentTrackIndex + 1) % tracks.length;
+            loadAndPlay(nextIndex);
+        }
+
+        function playPrev() {
+            if (tracks.length === 0) return;
+            let prevIndex = (currentTrackIndex - 1 + tracks.length) % tracks.length;
+            loadAndPlay(prevIndex);
+        }
+
+        // دالة تقديم وإرجاع التلاوة بثوانٍ محددة (مثل 10 ثوانٍ)
+        function seekBySeconds(seconds) {
+            if (!audio.duration) return;
+            let targetTime = audio.currentTime + seconds;
+            if (targetTime < 0) targetTime = 0;
+            if (targetTime > audio.duration) targetTime = audio.duration;
+            audio.currentTime = targetTime;
+        }
+
+        function updateUI() {
+            renderPlaylist();
+            if (audio.paused) {
+                mainPlayBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
+            } else {
+                mainPlayBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
+            }
+        }
+
+        audio.ontimeupdate = () => {
+            if (audio.duration) {
+                const pct = (audio.currentTime / audio.duration) * 100;
+                progressFill.style.width = `${pct}%`;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+                totalDurationEl.textContent = formatTime(audio.duration);
+            }
+        };
+
+        audio.onended = () => {
+            playNext();
+        };
+
+        function seek(e) {
+            if (!audio.duration) return;
+            
+            const progressBar = document.getElementById('progressBar');
+            const rect = progressBar.getBoundingClientRect();
+            
+            const clickX = e.clientX - rect.left;
+            let percentage = clickX / rect.width;
+
+            if (percentage < 0) percentage = 0;
+            if (percentage > 1) percentage = 1;
+
+            audio.currentTime = percentage * audio.duration;
+        }
+
+        function filterSurahs() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const cards = document.querySelectorAll('.track-card');
+            
+            cards.forEach((card, index) => {
+                const name = tracks[index].name.toLowerCase();
+                if (name.includes(input)) {
+                    card.style.display = 'flex';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+
+        function formatTime(seconds) {
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${min < 10 ? '0' : ''}${min}:${sec < 10 ? '0' : ''}${sec}`;
+        }
+
+        renderPlaylist();
+    </script>
+</body>
+</html>
