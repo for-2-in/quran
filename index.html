@@ -8,10 +8,10 @@
 
 <!-- صورة المعاينة عند إرسال الرابط عبر الواتساب والتليجرام (صيغة JPG) -->
 <meta property="og:title" content="تلاوات قرآنية">
-<meta property="og:description" content="تلاوات خاشعة بصوتي الخاص">
+<meta property="og:description" content="ختمة --غير رسمية-- علها تكون أجرا بعد الممات">
 <meta property="og:image" content="favicon.jpg">
 <meta property="og:type" content="website">
-    <title> ختمة قرآنية غير معتمدة</title>
+    <title> ختمة قرآنية</title>
     <!-- Google Fonts & FontAwesome Icons -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -235,6 +235,35 @@
             padding: 2rem 0;
         }
 
+        /* Telegram Channel Link Banner */
+        .telegram-channel-banner {
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .telegram-channel-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--gold-primary);
+            font-size: 1.05rem;
+            font-weight: 500;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            transition: all 0.25s ease;
+        }
+
+        .telegram-channel-link:hover {
+            color: var(--gold-light);
+            background-color: var(--bg-card-hover);
+            border-color: var(--gold-primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.15);
+        }
+
         /* Search Section */
         .controls-bar {
             margin-bottom: 2rem;
@@ -396,6 +425,15 @@
             }
         }
     </style>
+    <!-- Google tag (gtag.js) - تتبع زوار الصفحة الرئيسية -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-CVHY0SWNL3"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-CVHY0SWNL3');
+</script>
 </head>
 <body>
 
@@ -430,6 +468,14 @@
     </div>
 
     <main class="container">
+        <!-- رابط قناة التليجرام فوق شريط البحث -->
+        <div class="telegram-channel-banner">
+            <a href="https://t.me/hodaa_llnas" target="_blank" class="telegram-channel-link">
+                <i class="fa-brands fa-telegram"></i>
+                <span>قناة دين و نشر التحديثات</span>
+            </a>
+        </div>
+
         <div class="controls-bar">
             <div class="search-box">
                 <input type="text" id="searchInput" placeholder="بحث عن سورة..." onkeyup="filterSurahs()">
@@ -612,7 +658,7 @@
         }
 
         audio.ontimeupdate = () => {
-            if (audio.duration) {
+            if (audio.duration && !isDragging) {
                 const pct = (audio.currentTime / audio.duration) * 100;
                 progressFill.style.width = `${pct}%`;
                 currentTimeEl.textContent = formatTime(audio.currentTime);
@@ -638,6 +684,63 @@
 
             audio.currentTime = percentage * audio.duration;
         }
+
+        // إضافة أحداث السحب لشريط التقديم (Mouse & Touch Dragging)
+        let isDragging = false;
+        const progressBarEl = document.getElementById('progressBar');
+
+        function updateSeekFromEvent(e) {
+            if (!audio.duration) return;
+            const rect = progressBarEl.getBoundingClientRect();
+            const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            let percentage = (clientX - rect.left) / rect.width;
+            if (percentage < 0) percentage = 0;
+            if (percentage > 1) percentage = 1;
+
+            progressFill.style.width = `${percentage * 100}%`;
+            currentTimeEl.textContent = formatTime(percentage * audio.duration);
+            return percentage;
+        }
+
+        progressBarEl.addEventListener('mousedown', (e) => {
+            if (!audio.duration) return;
+            isDragging = true;
+            updateSeekFromEvent(e);
+        });
+
+        progressBarEl.addEventListener('touchstart', (e) => {
+            if (!audio.duration) return;
+            isDragging = true;
+            updateSeekFromEvent(e);
+        }, { passive: true });
+
+        window.addEventListener('mousemove', (e) => {
+            if (isDragging) {
+                updateSeekFromEvent(e);
+            }
+        });
+
+        window.addEventListener('touchmove', (e) => {
+            if (isDragging) {
+                updateSeekFromEvent(e);
+            }
+        }, { passive: true });
+
+        window.addEventListener('mouseup', (e) => {
+            if (isDragging) {
+                const percentage = updateSeekFromEvent(e);
+                audio.currentTime = percentage * audio.duration;
+                isDragging = false;
+            }
+        });
+
+        window.addEventListener('touchend', (e) => {
+            if (isDragging) {
+                isDragging = false;
+                const percentage = parseFloat(progressFill.style.width) / 100;
+                audio.currentTime = percentage * audio.duration;
+            }
+        });
 
         function filterSurahs() {
             const input = document.getElementById('searchInput').value.toLowerCase();
